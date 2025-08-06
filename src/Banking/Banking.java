@@ -3,50 +3,94 @@ package Banking;
 import java.util.Scanner;
 
 public class Banking {
-
+    
     public static void main(String[] args) {
-        try (Scanner sc = new Scanner(System.in)) {
-            System.out.println("HELLO WELCOME TO THE SYSTEM!");
-            System.out.println("What do you feel doing today? ");
-            System.out.println("1. Banking");
-            System.out.println("2. Doctors Appointment");
-            System.out.println("3. Shopping");
-            System.out.print("Enter choice: ");
-            int choice = sc.nextInt();
-            switch (choice) {
-                case 1:
-                    BankingClass bc = new BankingClass();
-                    
-                    while (!bc.isAccountLocked()) {
-                        System.out.println("--- Banking Login ---");
-                        System.out.print("Enter your Account No: ");
-                        int accountNo = sc.nextInt();
-                        
-                        System.out.print("Enter your Pin: ");
-                        int pin = sc.nextInt();
-                        
-                        if (bc.verifyAccount(accountNo, pin)) {
-                            System.out.println("LOGIN SUCCESS");
-                            bc.viewBalance(); 
-                            break; 
-                        } else {
-                           
-                            if (bc.isAccountLocked()) {
-                                System.out.println("Account locked due to too many failed attempts. Please contact support.");
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("HELLO WELCOME TO THE SYSTEM!");
+        System.out.println("What do you feel doing today? ");
+        System.out.println("1. Banking");
+        System.out.println("2. Doctors Appointment");
+        System.out.println("3. Shopping");
+        
+        BankingClass bApp[] = new BankingClass[10];
+        int accountCount = 0;
+        
+        System.out.print("Enter choice: ");
+        int choice = sc.nextInt();
+        int resp;
+        switch(choice){
+            case 1:
+              do{
+                System.out.println("1. Register Account");
+                System.out.println("2. Login Account");
+                System.out.println("3. View All Accounts");
+                System.out.println("Enter Selection: ");
+                int action = sc.nextInt();
+                
+                switch(action){
+                    case 1:
+                                if (accountCount < bApp.length) {
+                                bApp[accountCount] = new BankingClass();
+                                System.out.print("Enter Account No.: ");
+                                bApp[accountCount].setAccountNo(sc.nextInt());
+                                System.out.print("Enter Account Pin: ");
+                                bApp[accountCount].setPin(sc.nextInt());
+                                System.out.println("Account registered successfully!");
+                                accountCount++;
+                            } else {
+                                System.out.println("Error!");
                             }
-                        }
-                        System.out.println("--------------------"); 
-                    }
-                    break; 
-                case 2:
-                    System.out.println("Doctors Appointment functionality is not yet implemented.");
-                    break;
-                case 3:
-                    System.out.println("Shopping functionality is not yet implemented.");
-                    break;
-                default:
-                    System.out.println("Invalid Selection!");
-            }
+                            break;
+                    case 2:
+                        int attempts = 3;
+                        boolean loginSuccess = false;
+                        BankingClass bc = new BankingClass();
+
+                        while(attempts > 0 && !loginSuccess) {
+                                System.out.print("Enter your Account No: ");
+                                int accountNo = sc.nextInt();
+                                System.out.print("Enter your Pin: ");
+                                int pin = sc.nextInt();
+                                
+                                for (int i = 0; i < accountCount; i++) {
+                                    if (bApp[i].verifyAccount(accountNo, pin)) {
+                                        System.out.println("You have Successfully Log in");
+                                        loginSuccess = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (!loginSuccess) {
+                                    attempts--;
+                                    System.out.println("INVALID ACCOUNT! Attempt Left: " + attempts);
+                                    if(attempts == 0) {
+                                        System.out.println("ATTEMPT LIMIT REACHED!");
+                                        System.exit(0);
+                                    }
+                                }
+                            }
+                            break;
+                    case 3:
+                        break;
+                
+                }
+                  System.out.print("Do you want to continue? (Yes-1/No-0):");
+                  resp = sc.nextInt();
+              }while(resp == 1);
+                
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+            default:
+                System.out.println("Invalid Selection!");
+        
         }
+            
     }
+    
 }
