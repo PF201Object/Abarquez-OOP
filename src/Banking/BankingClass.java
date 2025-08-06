@@ -22,14 +22,6 @@ public class BankingClass {
         return pin;
     }
     
-   
-    
-    
-    
-    
-    
-    
-    
     public boolean verifyAccount(int acc, int pn){
         
             if(acc == accountNo && pn == pin){
